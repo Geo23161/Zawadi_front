@@ -1,0 +1,7 @@
+{
+  "name": "Zawadi",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
