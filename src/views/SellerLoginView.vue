@@ -140,7 +140,9 @@ import { useRoute, useRouter } from "vue-router";
 import { check_connect } from "@/global/seller_auth";
 import { Storage } from "@ionic/storage";
 import axios from "axios";
+import {StatusBar} from "@capacitor/status-bar"
 
+StatusBar.setBackgroundColor({color : "#17A649"})
 const email = ref("");
 const password = ref("");
 const router = useRouter();

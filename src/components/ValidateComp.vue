@@ -260,11 +260,16 @@ export default defineComponent({
     };
     const enable_payment = async (plan: string) => {
       const load = await showLoading("Loading...");
+      const pks : number[] = [] 
+      for(const p of prods.value){
+        pks.push(p.id)
+      }
       const resp = await axios.post(
         "v2/api/enable_payment/" + id.value + "/",
         {
           tot: tot.value,
           plans: plan,
+          pks : JSON.stringify(pks)
         },
         {
           headers: {

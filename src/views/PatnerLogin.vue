@@ -242,7 +242,9 @@ import { check_connect } from "@/global/patner_auth";
 import { show_alert, showLoading } from "@/global/seller_auth";
 import { Storage } from "@ionic/storage";
 import axios from "axios";
+import {StatusBar} from "@capacitor/status-bar"
 
+StatusBar.setBackgroundColor({color : "#F28241"})
 const email = ref("");
 const password = ref("");
 const router = useRouter();

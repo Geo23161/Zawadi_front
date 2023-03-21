@@ -33,7 +33,7 @@
               :icon="download"
             ></ion-icon>
           </ion-button>
-          <ion-button @click="vOpen = true">
+          <ion-button @click="enable()">
             <ion-icon
               color="tertiary"
               slot="icon-only"
@@ -895,6 +895,11 @@ const get_prods = () => {
   }
   return mylist;
 };
+
+const enable = () => {
+  if(mydis.value.demand.state == 'En discussion') vOpen.value = true;
+  else show_alert("Discussion non démarrée", "Veuillez demarrer la discussion en contactant le client avant de lancer le paiement.")
+}
 
 const prods_mm = async (min: number, max: number, pk: number) => {
   const resp = await axios.post(

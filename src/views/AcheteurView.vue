@@ -195,10 +195,43 @@
         --->
       </div>
     </ion-content>
+    <ion-modal mode="ios" :is-open="false">
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Historique de paiement</ion-title>
+          <ion-buttons slot="end">
+            <ion-button @click="rOpen = false">Fermer</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding"> </ion-content>
+    </ion-modal>
+    <show-version
+    v-if="version"
+      :isOpen="uOpen"
+      :version="version"
+      :platform="platform"
+      @close="uOpen = false"
+    ></show-version>
   </ion-page>
+  
 </template>
 
 <script setup lang="ts">
+interface VersionObj {
+  version: number | string;
+  title: string;
+  image: string;
+  description: string;
+  action: {
+    ios: string;
+    android: string;
+    web: string;
+  };
+  in_apps: string[];
+}
+
+import ShowVersion from "../components/ShowVersion.vue";
 import {
   IonHeader,
   IonPage,
@@ -218,6 +251,8 @@ import {
   IonCard,
   IonCardTitle,
   IonCardContent,
+  isPlatform,
+  IonModal
 } from "@ionic/vue";
 import {
   menu,
@@ -237,8 +272,36 @@ import { Storage } from "@ionic/storage";
 import { useRoute, useRouter } from "vue-router";
 import { ref } from "vue";
 import axios from "axios";
+import {StatusBar} from "@capacitor/status-bar"
 import { presentToast, showLoading, show_warn } from "@/global/seller_auth";
 
+StatusBar.setBackgroundColor({color : "#f25765"})
+const my_version = ref(1.0);
+const version = ref<VersionObj | undefined>();
+const uOpen = ref(false);
+const platform = ref("android");
+const setPlatform = () => {
+  if (isPlatform("ios")) platform.value = "ios";
+  if (isPlatform("mobileweb")) platform.value = "web";
+};
+const get_version = async () => {
+  const resp = await axios.get("v2/api/get_version/");
+  if (resp.data["done"]) {
+    version.value = resp.data["result"];
+    if (
+      version.value?.version != my_version.value ||
+      `${version.value?.version}` != `${my_version.value}`
+    ) {
+      let myap = [] as any[]
+      if (version.value?.in_apps) myap = version.value?.in_apps
+      if ( myap.includes(platform.value)) uOpen.value = true;
+    }
+  }
+};
+
+setTimeout(() => {
+  get_version();
+}, 2000);
 const router = useRouter();
 const route = useRoute();
 const storage = new Storage({
