@@ -6,7 +6,7 @@ http://ionicframework.com/docs/theming/ */
   /** primary **/
   --ion-color-primary: #f25765;
   --ion-color-primary-rgb: 242, 87, 101;
-  --ion-color-primary-contrast: hsl(0, 63%, 46%);
+  --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
   --ion-color-primary-shade: #f86792;
   --ion-color-primary-tint: #ed576b;
