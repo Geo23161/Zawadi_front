@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Zawadi</string>
+    <string name="title_activity_main">Zawadi</string>
+    <string name="package_name">zawadi.elifeg.com</string>
+    <string name="custom_url_scheme">zawadi.elifeg.com</string>
+</resources>
