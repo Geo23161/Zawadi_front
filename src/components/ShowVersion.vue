@@ -67,6 +67,7 @@ export default defineComponent({
       myver,
       close,
       open_sys_lnk,
+      act
     };
   },
 });

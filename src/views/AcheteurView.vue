@@ -327,7 +327,7 @@ import { presentToast, showLoading, show_warn } from "@/global/seller_auth";
 
 StatusBar.setBackgroundColor({ color: "#f25765" });
 const pOpen = ref(false);
-const my_version = ref(1.0);
+const my_version = ref(1.1);
 const version = ref<VersionObj | undefined>();
 const uOpen = ref(false);
 const platform = ref("android");
