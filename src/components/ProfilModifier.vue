@@ -291,20 +291,23 @@ export default defineComponent({
       setTimeout(() => {
       const input = document.querySelector("#phone");
       const input2 = document.querySelector("#phone2");
+      if(input){
       inputphone = intlTelInput(input, {
         preferredCountries: ["bj", "tg", "ci"],
         initialCountry: "auto",
         geoIpLookup: getIp,
         utilsScript:
           "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-      });
+      });}
+      if(input2){
       inputphone2 = intlTelInput(input2, {
         preferredCountries: ["bj", "tg", "ci"],
         initialCountry: "auto",
         geoIpLookup: getIp,
         utilsScript:
           "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-      });
+      });}
+      
     }, 1500);
     })
     
