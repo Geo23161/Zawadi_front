@@ -208,7 +208,7 @@
     </ion-modal>
     <show-version
     v-if="version"
-      :isOpen="uOpen"
+      :isOpen="false"
       :version="version"
       :platform="platform"
       @close="uOpen = false"

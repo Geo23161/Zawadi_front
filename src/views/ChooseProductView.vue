@@ -1,5 +1,5 @@
 <template>
-  <ion-page>
+  <ion-page >
     <ion-content>
       <div class="body_all">
         <div class="menu_cont">
