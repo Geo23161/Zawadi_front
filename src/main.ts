@@ -26,7 +26,8 @@ import axios from 'axios'
 import 'intl-tel-input/build/css/intlTelInput.css';
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
-const base = "http://192.168.43.244:8000/"
+const base = "https://api.zawadi.site/"
+//const base = "https://api.zawadi.site/"
 
 axios.defaults.baseURL = base
 
