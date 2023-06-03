@@ -1,0 +1,6 @@
+{
+	"appId": "zawadi.elifeg.com",
+	"appName": "Zawadi",
+	"webDir": "dist",
+	"bundledWebRuntime": false
+}

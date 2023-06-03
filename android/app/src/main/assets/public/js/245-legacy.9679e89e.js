@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkZawadi"]=self["webpackChunkZawadi"]||[]).push([[245],{6245:(a,e,n)=>{n.r(e),n.d(e,{default:()=>d});var r=n(6252);function s(a,e,n,s,t,u){return(0,r.wg)(),(0,r.iD)("div")}const t=(0,r.aZ)({setup(){}});var u=n(3744);const c=(0,u.Z)(t,[["render",s]]),d=c}}]);
+//# sourceMappingURL=245-legacy.9679e89e.js.map
