@@ -97,6 +97,7 @@
 <script >
 import { defineComponent, defineProps, ref, defineEmits } from "vue";
 import { arrowBack, checkmark } from "ionicons/icons";
+import { IonAvatar, IonCheckbox } from "@ionic/vue"
 
 export default defineComponent({
   setup(prop, { emit }) {

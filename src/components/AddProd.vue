@@ -186,7 +186,7 @@ export default defineComponent({
     const min = ref<number>();
     const max = ref<number>();
     const access = ref<any>();
-    const api_url = "http://192.168.43.244:8000/";
+    const api_url = "https://api.zawadi.site/";
     const set_access = async () => {
       access.value = await access_tok(`/seller/params`, router, undefined);
     };

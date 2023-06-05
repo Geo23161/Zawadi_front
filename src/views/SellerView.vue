@@ -28,7 +28,7 @@
           </ion-item>
           <ion-item
             detail="true"
-            @click="open_sys_lnk('https://www.zawadi.site/blog')"
+            @click="open_sys_lnk('https://apiv2.zawadi.site/blog')"
             button
           >
             <ion-avatar slot="start">
@@ -36,13 +36,21 @@
             </ion-avatar>
             <ion-label> Zawadi Blog </ion-label>
           </ion-item>
+          <ion-item
+              detail="true"
+              @click="open_norm_lnk('https://blogv2.zawadi.site/privacy')"
+              button
+            >
+              <ion-icon :icon="accessibility" slot="start"></ion-icon>
+              <ion-label> Politique de confidentialité</ion-label>
+            </ion-item>
         </ion-list>
       </ion-content>
-      <ion-footer >
-          <ion-toolbar mode="ios" >
-            <ion-title> &copy; Elife Global</ion-title>
-          </ion-toolbar>
-        </ion-footer>
+      <ion-footer>
+        <ion-toolbar mode="ios">
+          <ion-title> &copy; Elife Global</ion-title>
+        </ion-toolbar>
+      </ion-footer>
     </ion-menu>
     <ion-content v-if="has_load">
       <div class="body_all">
@@ -143,7 +151,8 @@
                 <div class="divid"></div>
               </div>
               <div style="padding-left: 0.4rem">
-                {{ sub.s_count }}<span style="color: #8c8c8c">/{{ sub.p_count }}</span> vendus
+                {{ sub.s_count
+                }}<span style="color: #8c8c8c">/{{ sub.p_count }}</span> vendus
               </div>
             </div>
           </div>
@@ -152,17 +161,26 @@
           <div
             style="display: flex; justify-content: space-around; padding: 2rem"
           >
-              <img
-                src="../../public/assets/img/not_cat.svg"
-                style="width: 60%"
-              />
+            <img src="../../public/assets/img/not_cat.svg" style="width: 60%" />
           </div>
-          <div style="text-align: center; padding-left: 1.5rem; padding-right: 1.5rem;" >
-            Vous n'avez pas encore ajouté les catégories de produits dont vous disposez.
+          <div
+            style="
+              text-align: center;
+              padding-left: 1.5rem;
+              padding-right: 1.5rem;
+            "
+          >
+            Vous n'avez pas encore ajouté les catégories de produits dont vous
+            disposez.
           </div>
         </div>
         <div class="add">
-          <button @click="router.push(`/seller/add/?picture=${seller_state.get_picture}`)" class="addBut">
+          <button
+            @click="
+              router.push(`/seller/add/?picture=${seller_state.get_picture}`)
+            "
+            class="addBut"
+          >
             Ajouter une categorie
           </button>
         </div>
@@ -467,6 +485,7 @@ import {
   IonMenu,
   IonMenuToggle,
   onIonViewDidEnter,
+  IonAvatar,
 } from "@ionic/vue";
 import { ref } from "vue";
 import axios from "axios";
@@ -476,26 +495,79 @@ import {
   caretForwardCircle,
   checkmarkCircle,
   cash,
+  accessibility
 } from "ionicons/icons";
 import { useRouter } from "vue-router";
-import { access_tok, showLoading } from "../global/seller_auth";
+import {
+  access_tok,
+  presentToast,
+  showLoading,
+  show_warn,
+} from "../global/seller_auth";
 const router = useRouter();
 const seller_state = ref();
 const has_load = ref(false);
 const open_sys_lnk = (url: string) => {
-  window.open(url, "_system", "location=yes");
+  window.location.href = url;
 };
+const has_pays = ref<any[]>([]);
 const get_seller_state = async () => {
   const load = await showLoading("Loading...");
   const res = await axios.get("v2/api/get_seller_state/", {
     headers: {
-      Authorization: `Bearer ${(await access_tok("/seller/home", router, undefined))}`,
+      Authorization: `Bearer ${await access_tok(
+        "/seller/home",
+        router,
+        undefined
+      )}`,
     },
   });
   if (res.data["done"])
     (seller_state.value = res.data["result"]),
       load.dismiss(),
-      (has_load.value = true);
+      (has_load.value = true),
+      (has_pays.value = res.data["result"]["has_pays"]);
+  if (has_pays.value.length) final_checks();
+};
+const cursor = ref(0);
+const final_checks = async () => {
+  const verified_pay = async () => {
+    const load = await showLoading("Loading...");
+    const resp = await axios({
+      url: "v2/api/verified_pay/",
+      method: "POST",
+      data: {
+        token: has_pays.value[cursor.value].token,
+      },
+      headers: {
+        Authorization: `Bearer ${await access_tok(
+          "/seller/home",
+          router,
+          load
+        )}`,
+      },
+    });
+    if (resp.data["done"]) {
+      load.dismiss();
+      presentToast(
+        "bottom",
+        "Paiement pour la" +
+          has_pays.value[cursor.value].dis +
+          " marqué comme reçu."
+      );
+      cursor.value++;
+      if (cursor.value + 1 <= has_pays.value.length) final_checks();
+    }
+  };
+  const warn = await show_warn(
+    "Confirmation de paiement",
+    "Avez-vous reçu un paiement de " +
+      has_pays.value[cursor.value].amount +
+      " Fcfa pour la " +
+      has_pays.value[cursor.value].dis,
+    "Oui",
+    verified_pay
+  );
 };
 
 onIonViewDidEnter(() => {

@@ -1,5 +1,5 @@
 <template>
-  <ion-page >
+  <ion-page>
     <ion-content>
       <div class="body_all">
         <div class="menu_cont">
@@ -56,7 +56,7 @@
                 <ion-list style="background: rgb(238, 238, 238)">
                   <div v-for="s in get_cur_elts(stp)" :key="s.id" class="d_sp">
                     <ion-item @click="(sub = s.id), stp++" button detail="true">
-                      <ion-avatar slot="start">
+                      <ion-avatar v-if="false" slot="start">
                         <img :src="s.get_picture" />
                       </ion-avatar>
                       <ion-label> {{ s.name }} </ion-label>
@@ -255,7 +255,7 @@
 </style>
 
 <script setup lang="ts" >
-import { IonPage, IonContent, IonSpinner, onIonViewDidEnter } from "@ionic/vue";
+import { IonPage, IonContent, IonSpinner, onIonViewDidEnter, IonAvatar, IonCheckbox } from "@ionic/vue";
 import { ref } from "vue";
 import { arrowBack, caretForward } from "ionicons/icons";
 import { useRouter } from "vue-router";

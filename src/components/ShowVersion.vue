@@ -60,13 +60,14 @@ export default defineComponent({
       ctx.emit("close");
     };
     const open_sys_lnk = (url: string | undefined) => {
-      window.open(url, "_system", "location=yes");
+      window.location.href = (url as string)
     };
 
     return {
       myver,
       close,
       open_sys_lnk,
+      act
     };
   },
 });

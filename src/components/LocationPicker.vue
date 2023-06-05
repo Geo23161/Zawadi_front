@@ -102,6 +102,9 @@ import {
   IonInput,
   IonModal,
   IonIcon,
+  IonAvatar,
+  IonCheckbox,
+  IonSearchbar
 } from "@ionic/vue";
 import { location } from "ionicons/icons";
 import axios from "axios";
@@ -109,6 +112,11 @@ import axios from "axios";
 export default defineComponent({
   props : {
     isOpen : Boolean
+  },
+  components : {
+    IonSearchbar,
+    IonCheckbox, 
+    IonAvatar
   },
   setup(prop, { emit }) {
     const country = ref();
@@ -125,7 +133,7 @@ export default defineComponent({
       name: "",
     });
     const is_searching = ref(false);
-    const url_base = "http://192.168.43.244:8000/";
+    const url_base = "https://api.zawadi.site/";
     const not_found = ref(false);
     const includes_quart = (q) => {
       if(quart.value.name == q.name && quart.value.lat == q.lat && quart.value.lng == q.lng){

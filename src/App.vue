@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { IonApp, IonRouterOutlet, isPlatform } from "@ionic/vue";
+import { IonApp, IonRouterOutlet, isPlatform, IonAvatar, IonItem, IonCheckbox } from "@ionic/vue";
 import axios from "axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
@@ -25,4 +25,3 @@ const router = useRouter();
   opacity: 0;
 }
 </style>
-

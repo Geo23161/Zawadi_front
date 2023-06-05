@@ -196,7 +196,8 @@ import {
   alertController,
   onIonViewWillEnter,
   IonModal,
-  IonContent
+  IonContent,
+  IonCheckbox
 } from "@ionic/vue";
 import intlTelInput from "intl-tel-input";
 import { NInput } from "naive-ui";
@@ -291,23 +292,22 @@ export default defineComponent({
       setTimeout(() => {
       const input = document.querySelector("#phone");
       const input2 = document.querySelector("#phone2");
-      if(input){
+      if(input)
       inputphone = intlTelInput(input, {
         preferredCountries: ["bj", "tg", "ci"],
         initialCountry: "auto",
         geoIpLookup: getIp,
         utilsScript:
           "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-      });}
-      if(input2){
+      });
+      if(input2)
       inputphone2 = intlTelInput(input2, {
         preferredCountries: ["bj", "tg", "ci"],
         initialCountry: "auto",
         geoIpLookup: getIp,
         utilsScript:
           "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
-      });}
-      
+      });
     }, 1500);
     })
     
@@ -316,7 +316,6 @@ export default defineComponent({
       lOpen.value = false;
     };
     const set_number = () => {
-      if(!inputphone.isValidNumber()) return 0
       whatsapp.value = inputphone.getNumber();
       if (same.value) phone.value = whatsapp.value;
       else phone.value = inputphone2.getNumber();
@@ -331,7 +330,6 @@ export default defineComponent({
           "Veuillez entrer un numéro whatsapp correcte"
         );
       }
-      alert(first_name.value)
       if (same.value) {
         phone.value = whatsapp.value;
       } else {

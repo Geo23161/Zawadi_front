@@ -551,7 +551,7 @@
             <ion-input
               type="text"
               readonly
-              :value="`http://192.168.43.244:8000/v2/pay/dem:${mydis.demand.id}/`"
+              :value="`https://api.zawadi.site/v2/pay/dem:${mydis.demand.id}/`"
               id="password"
             ></ion-input>
           </ion-item>
@@ -791,6 +791,8 @@ import {
   IonAccordionGroup,
   onIonViewDidEnter,
   IonModal,
+  IonAvatar,
+  IonCheckbox
 } from "@ionic/vue";
 import { computed, ref } from "vue";
 import {
@@ -806,7 +808,7 @@ import {
   call,
   arrowBack,
   clipboard,
-  download
+  download,
 } from "ionicons/icons";
 import { useRoute, useRouter } from "vue-router";
 import { presentToast, showLoading, show_alert, show_warn } from "@/global/seller_auth";
@@ -868,7 +870,7 @@ const get_mydis = async () => {
 };
 
 const open_sys_lnk = (url: string) => {
-  window.open(url, "_system", "location=yes");
+  window.location.href = url
 };
 
 const find_prod = (url: string) => {
@@ -1027,7 +1029,6 @@ const reload = async () => {
 };
 
 const copy_text = (text: string) => {
-  alert(text);
   if (navigator.clipboard) {
     navigator.clipboard.writeText(text);
     presentToast("bottom", "Le lien a été copié avec succes");

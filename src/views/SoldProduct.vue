@@ -224,6 +224,8 @@ import {
   IonAccordion,
   IonAccordionGroup,
   onIonViewDidEnter,
+  IonAvatar,
+  IonCheckbox
 } from "@ionic/vue";
 import { ref } from "vue";
 import { add, checkmarkDone, trash, shareSocial, arrowBack } from "ionicons/icons";

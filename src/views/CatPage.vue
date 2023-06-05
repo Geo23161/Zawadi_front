@@ -177,7 +177,7 @@
 
                   <div class="corp">
                     <div class="name_p">{{ prod.name }}</div>
-                    <div v-if="prod.detail" >
+                    <div v-if="prod.details" >
                         <div class="text_p" v-if="!(cursor == prod.id)" >
                           {{ seen_text(prod.details) }}<a style="color: blue; text-decoration: underline;" v-if="!is_safe(prod.details)" @click="cursor = prod.id" >Voir plus</a>
                         </div>
@@ -314,6 +314,8 @@ import {
   IonAccordion,
   IonAccordionGroup,
   onIonViewWillEnter,
+  IonAvatar,
+  IonCheckbox
 } from "@ionic/vue";
 import { ref } from "vue";
 import {
@@ -325,7 +327,7 @@ import {
   download,
   arrowBack,
   caretDownCircle,
-  logoWhatsapp
+  logoWhatsapp,
 } from "ionicons/icons";
 import { access_tok } from "@/global/patner_auth";
 import { showLoading, show_warn } from "@/global/seller_auth";

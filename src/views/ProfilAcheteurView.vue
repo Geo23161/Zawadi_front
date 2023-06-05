@@ -225,7 +225,6 @@ onIonViewWillEnter(() => {
 });
 
 const update = async () => {
-  alert("is_updating");
   const storage = new Storage({
     name: "client_info",
   });

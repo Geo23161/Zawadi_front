@@ -28,7 +28,7 @@
           </ion-item>
           <ion-item
             detail="true"
-            @click="open_sys_lnk('https://www.zawadi.site/blog')"
+            @click="open_sys_lnk('https://apiv2.zawadi.site/blog')"
             button
           >
             <ion-avatar slot="start">
@@ -36,6 +36,14 @@
             </ion-avatar>
             <ion-label> Zawadi Blog </ion-label>
           </ion-item>
+          <ion-item
+              detail="true"
+              @click="open_norm_lnk('https://blogv2.zawadi.site/privacy')"
+              button
+            >
+              <ion-icon :icon="accessibility" slot="start"></ion-icon>
+              <ion-label> Politique de confidentialité</ion-label>
+            </ion-item>
         </ion-list>
       </ion-content>
       <ion-footer >
@@ -234,8 +242,9 @@ import {
   IonSpinner,
   alertController,
   loadingController,
+  IonAvatar
 } from "@ionic/vue";
-import { menu } from "ionicons/icons";
+import { menu, accessibility } from "ionicons/icons";
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { check_connect } from "@/global/patner_auth";
@@ -263,7 +272,7 @@ const has_account = async () => {
 };
 
 const open_sys_lnk = (url: string) => {
-  window.open(url, "_system", "location=yes");
+  window.location.href = url
 };
 
 const open_norm_lnk = (lnk: string) => {

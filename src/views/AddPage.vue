@@ -55,7 +55,7 @@
               <ion-list style="background: rgb(238, 238, 238)">
                 <div v-for="s in get_cur_elts(stp)" :key="s.id" class="d_sp">
                   <ion-item @click="(sub = s.id), stp++" button detail="true">
-                    <ion-avatar slot="start">
+                    <ion-avatar v-if="false" slot="start">
                       <img :src="s.get_picture" />
                     </ion-avatar>
                     <ion-label> {{ s.name }} </ion-label>
@@ -204,7 +204,7 @@ import { access_tok, showLoading } from "@/global/seller_auth";
 import axios from "axios";
 import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { IonPage, IonContent, IonItem, IonButton, IonButtons, IonBackButton } from "@ionic/vue";
+import { IonPage, IonContent, IonItem, IonButton, IonButtons, IonBackButton, IonAvatar, IonCheckbox } from "@ionic/vue";
 import {
   arrowBack
 } from "ionicons/icons";

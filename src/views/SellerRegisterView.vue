@@ -47,7 +47,7 @@
             </div>
             <div class="d_sp">
               <ion-item fill="outline" mode="md" color="secondary">
-                <ion-label position="floating">Nom du commerce</ion-label>
+                <ion-label position="floating">Nom du commerce ou d'utilisateur</ion-label>
                 <ion-input
                   required
                   type="text"

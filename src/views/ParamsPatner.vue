@@ -152,6 +152,7 @@ import {
   IonBackButton,
   IonModal,
   onIonViewWillEnter,
+  IonAvatar
 } from "@ionic/vue";
 import { person, key, cashOutline, eye } from "ionicons/icons";
 import { showLoading } from "@/global/seller_auth";
@@ -164,7 +165,7 @@ import UpdatePassword from "@/components/PatnerUpdatePassword.vue";
 import AddMomo from "@/components/AddMomo.vue";
 
 const open_sys_lnk = (url) => {
-  window.open(url, "_system", "location=yes");
+  window.location.href = url
 };
 const has_load = ref(false);
 const params = ref();

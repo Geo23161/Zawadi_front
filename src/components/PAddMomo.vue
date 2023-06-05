@@ -130,7 +130,7 @@ export default defineComponent({
     const set_number= () => {
         number.value = inputphone.getNumber();
     }
-    const api_url = "http://192.168.43.244:8000/"
+    const api_url = "https://api.zawadi.site/"
     const create_momo = async () => {
         if(file.value == ""){
             return await show_alert('Pièce invalide', 'Veuillez téléverser une pièce justifiant votre identité')

@@ -150,6 +150,7 @@ import {
   IonBackButton,
   onIonViewWillEnter,
   IonModal,
+  IonAvatar
 } from "@ionic/vue";
 import { person, key, cashOutline, eye } from "ionicons/icons";
 import { showLoading, access_tok } from "@/global/seller_auth";
@@ -176,7 +177,7 @@ const get_params = async () => {
   }
 };
 const open_sys_lnk = (url) => {
-  window.open(url, "_system", "location=yes");
+  window.location.href = url
 };
 const mOpen = ref(false);
 const pOpen = ref(false);

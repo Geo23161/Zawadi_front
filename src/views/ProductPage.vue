@@ -488,6 +488,8 @@ import {
   IonAccordionGroup,
   IonSpinner,
   IonModal,
+  IonAvatar,
+  IonCheckbox
 } from "@ionic/vue";
 import AddProd from "../components/AddProd.vue";
 import { ref } from "vue";

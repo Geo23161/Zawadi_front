@@ -28,7 +28,7 @@
           </ion-item>
           <ion-item
             detail="true"
-            @click="open_sys_lnk('https://www.zawadi.site/blog')"
+            @click="open_sys_lnk('https://apiv2.zawadi.site/blog')"
             button
           >
             <ion-avatar slot="start">
@@ -36,6 +36,14 @@
             </ion-avatar>
             <ion-label> Zawadi Blog </ion-label>
           </ion-item>
+          <ion-item
+              detail="true"
+              @click="open_norm_lnk('https://blogv2.zawadi.site/privacy')"
+              button
+            >
+              <ion-icon :icon="accessibility" slot="start"></ion-icon>
+              <ion-label> Politique de confidentialité</ion-label>
+            </ion-item>
         </ion-list>
       </ion-content>
       <ion-footer >
@@ -484,6 +492,7 @@ import {
   IonTitle,
   IonModal,
   onIonViewDidEnter,
+  IonAvatar
 } from "@ionic/vue";
 import { ref } from "vue";
 import {
@@ -492,6 +501,7 @@ import {
   caretForwardCircle,
   checkmarkCircle,
   cash,
+  accessibility
 } from "ionicons/icons";
 import AddCat from "../components/AddCat.vue";
 import { showLoading, show_warn } from "@/global/seller_auth";
@@ -518,7 +528,7 @@ const get_patner = async () => {
 };
 
 const open_sys_lnk = (url: string) => {
-  window.open(url, "_system", "location=yes");
+  window.location.href = url
 };
 
 const open_norm_lnk = (lnk: string) => {

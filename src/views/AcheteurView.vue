@@ -29,7 +29,7 @@
             </ion-item>
             <ion-item
               detail="true"
-              @click="open_norm_lnk('https://www.zawadi.site/blog')"
+              @click="open_norm_lnk('https://apiv2.zawadi.site/blog')"
               button
             >
               <ion-avatar slot="start">
@@ -37,10 +37,18 @@
               </ion-avatar>
               <ion-label> Zawadi Blog </ion-label>
             </ion-item>
+            <ion-item
+              detail="true"
+              @click="open_norm_lnk('https://blogv2.zawadi.site/privacy')"
+              button
+            >
+              <ion-icon :icon="accessibility" slot="start"></ion-icon>
+              <ion-label> Politique de confidentialité</ion-label>
+            </ion-item>
           </ion-list>
         </ion-content>
-        <ion-footer mode="ios" >
-          <ion-toolbar  >
+        <ion-footer mode="ios">
+          <ion-toolbar>
             <ion-title> &copy; Elife Global</ion-title>
           </ion-toolbar>
         </ion-footer>
@@ -206,15 +214,63 @@
       </ion-header>
       <ion-content class="ion-padding"> </ion-content>
     </ion-modal>
+    <ion-modal :is-open="pOpen">
+      <ion-content>
+        <ion-toolbar>
+          <ion-title>Regler les vendeurs</ion-title>
+          <ion-buttons slot="end">
+            <ion-button color="light" @click="pOpen = false">Fermer</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+        <ion-list v-if="!checking_pay" class="ion-padding">
+          <n-table :bordered="false" :single-line="false">
+            <thead>
+              <tr>
+                <th>Mobile Money Vendeur</th>
+                <th>A payer</th>
+                <th>Pour</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="ps in cur_dem.get_pays_lis" :key="ps.seller_s">
+                <td>{{ ps.momo }}</td>
+                <td>{{ ps.amount }}</td>
+                <td>{{ ps.prods }}</td>
+              </tr>
+            </tbody>
+          </n-table>
+          <div style="padding: 1rem">
+            <ion-button type="submit" @click="check_sellers_pays()" expand="full">J'ai payé</ion-button>
+          </div>
+        </ion-list>
+        <ion-list v-else>
+          <div>
+            <div class="mytitle_">En attente de confirmation des vendeurs</div>
+            <div
+              style="
+                display: flex;
+                justify-content: space-around;
+                padding-top: 1rem;
+                padding-bottom: 0.9rem;
+              "
+            >
+              <img src="../../public/assets/img/paty.svg" style="width: 60vw" />
+            </div>
+            <div style="text-align: center">
+              <ion-spinner color="primary" name="dots"></ion-spinner>
+            </div>
+          </div>
+        </ion-list>
+      </ion-content>
+    </ion-modal>
     <show-version
-    v-if="version"
+      v-if="version"
       :isOpen="false"
       :version="version"
       :platform="platform"
       @close="uOpen = false"
     ></show-version>
   </ion-page>
-  
 </template>
 
 <script setup lang="ts">
@@ -252,7 +308,8 @@ import {
   IonCardTitle,
   IonCardContent,
   isPlatform,
-  IonModal
+  IonModal,
+  IonAvatar,
 } from "@ionic/vue";
 import {
   menu,
@@ -266,20 +323,24 @@ import {
   happy,
   trash,
   sad,
-  checkboxSharp
+  checkboxSharp,
+  accessibility
 } from "ionicons/icons";
+import {NTable} from "naive-ui"
 import { Storage } from "@ionic/storage";
 import { useRoute, useRouter } from "vue-router";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import axios from "axios";
-import {StatusBar} from "@capacitor/status-bar"
+import { StatusBar } from "@capacitor/status-bar";
 import { presentToast, showLoading, show_warn } from "@/global/seller_auth";
 
-StatusBar.setBackgroundColor({color : "#f25765"})
-const my_version = ref(1.0);
+StatusBar.setBackgroundColor({ color: "#f25765" });
+const pOpen = ref(false);
+const my_version = ref(1.1);
 const version = ref<VersionObj | undefined>();
 const uOpen = ref(false);
 const platform = ref("android");
+const cur_dem = ref();
 const setPlatform = () => {
   if (isPlatform("ios")) platform.value = "ios";
   if (isPlatform("mobileweb")) platform.value = "web";
@@ -292,9 +353,9 @@ const get_version = async () => {
       version.value?.version != my_version.value ||
       `${version.value?.version}` != `${my_version.value}`
     ) {
-      let myap = [] as any[]
-      if (version.value?.in_apps) myap = version.value?.in_apps
-      if ( myap.includes(platform.value)) uOpen.value = true;
+      let myap = [] as any[];
+      if (version.value?.in_apps) myap = version.value?.in_apps;
+      if (myap.includes(platform.value)) uOpen.value = true;
     }
   }
 };
@@ -315,6 +376,11 @@ let email: string | undefined;
 const get_email = async () => {
   email = await storage.get("email");
 };
+
+watch(cur_dem, (newc, oldc) => {
+  if(newc.is_ended == 'waiting') checking_pay.value = true;
+  else checking_pay.value = false;
+})
 
 const dems = ref<any[]>([]);
 const dem_load = ref(false);
@@ -355,7 +421,7 @@ const show_alert = async (title: string, mess: string) => {
   await alert.present();
 };
 const open_sys_lnk = (url: string) => {
-  window.open(url, "_system", "location=yes");
+  window.location.href = url;
 };
 const presentActionSheet = async (dem: any) => {
   const buttons: any[] = [];
@@ -366,67 +432,48 @@ const presentActionSheet = async (dem: any) => {
         text: dem.can_pay
           ? dem.payment
             ? "Voir mon paiement"
-            : "Faire le paiement"
-          : "Faire le paiement",
+            : "Payer la garantie"
+          : "Payer la garantie",
         icon: wallet,
         handler: () => {
           if (dem.can_pay)
-            window.open(
-              `http://192.168.43.244:8000/v2/pay/dem:${dem.id}/`,
-              "_system",
-              "location=yes"
-            );
+            window.location.href = `https://v1.zawadi.site/v2/pay/dem:${dem.id}/`;
           else
             show_alert(
               "Autorisation requise",
-              "Vous n'êtes pas encore autorisés à faire le paiement pour cette demande"
+              "Vous n'êtes pas encore autorisés à payer la garantie pour cette demande"
             );
         },
       },
       {
-        text: dem.satisfied ? "Demande déjà satisfaite" : "Marquer comme satisfaite",
-        icon: dem.satisfied ? checkboxSharp :happy,
+        text: dem.satisfied
+          ? "Demande déjà satisfaite"
+          : "Marquer comme satisfaite",
+        icon: dem.satisfied ? checkboxSharp : happy,
         handler: () => {
           if (!dem.satisfied) {
             if (dem.payment) {
               const satisfying = async () => {
-                const load = await showLoading("Loading...");
-                axios({
-                  url: `v2/api/satisfied/${dem.id}/?email=${email}`,
-                  method: "POST",
-                  data: {
-                    key: dem.unique_id,
-                  },
-                })
-                  .then((resp) => {
-                    if (resp.data["done"]) {
-                      load.dismiss();
-                      show_alert(
-                        "Demande satisfaite",
-                        "Vous venez de marquer cette demande comme satisfaite"
-                      );
-                      p.value = 1
-                      get_dems()
-                    }
-                  })
-                  .catch((err) => {
-                    console.log(err);
-                  });
+                cur_dem.value = dem
+                pOpen.value = true
               };
               show_warn(
                 "Confirmation requise",
-                "Voulez-vous marquer cette demande comme satisfaite?",
+                "Voulez-vous finaliser le payement et marquer cette demande comme satisfaite ?",
                 "Oui",
                 satisfying
               );
             } else {
               show_alert(
                 "Paiement requis",
-                "Vous devez d'abord avoir fait un paiement avant de marquer une demande comme satisfaite."
+                "Vous devez d'abord avoir fait un paiement de garantie avant de marquer une demande comme satisfaite."
               );
             }
           } else {
-            show_alert("Déjà satisfaite", "Cette demande a déjà été satisfaite.")
+            show_alert(
+              "Déjà satisfaite",
+              "Cette demande a déjà été satisfaite."
+            );
           }
         },
       },
@@ -508,9 +555,43 @@ const presentActionSheet = async (dem: any) => {
 };
 
 const open_norm_lnk = (lnk: string) => {
-  showLoading('Loading...')
-  window.location.href = lnk
-}
+  showLoading("Loading...");
+  window.location.href = lnk;
+};
+
+const checking_pay = ref(false);
+const check_sellers_pays = async () => {
+  checking_pay.value = true;
+  const load = await showLoading("Loading...");
+  const resp = await axios({
+    url: `v2/api/check_sellers_pays/${cur_dem.value.id}/?email=${email}`,
+    method: "POST",
+    data: {
+      key: cur_dem.value.unique_id,
+      pss: JSON.stringify(cur_dem.value.get_pays_lis),
+    },
+  });
+  if (resp.data["done"]) {
+    load.dismiss();
+    const interval = setInterval(() => {
+      axios({
+        url: `v2/api/dem_ended/${cur_dem.value.id}/?email=${email}`,
+        method: "POST",
+        data: {
+          key: cur_dem.value.unique_id,
+        },
+      }).then(resp => {
+        if(resp.data['done']){
+          if(resp.data['result'] == 'done'){
+            clearInterval(interval);
+            pOpen.value = false
+            presentToast("top", "Votre demande a été marquée comme satisfaite. Merci!")
+          }
+        }
+      })
+    }, 5000);
+  }
+};
 
 onIonViewDidEnter(() => {
   const has_new = localStorage.getItem("new");
@@ -534,6 +615,33 @@ onIonViewDidEnter(() => {
 </script>
 
 <style scoped>
+.mytitle_ {
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 500;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  line-height: 1.8rem;
+}
+
+ion-modal {
+  --height: 80%;
+  --border-radius: 16px;
+  --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+ion-modal::part(backdrop) {
+  background: #f2b4b9;
+  opacity: 1;
+}
+
+ion-modal ion-toolbar {
+  --background: #007e0a;
+  --color: white;
+}
+
 .title_card {
   display: flex;
   align-items: center;
@@ -549,11 +657,11 @@ onIonViewDidEnter(() => {
 }
 
 ion-menu::part(backdrop) {
-  background-color: #8660637e;
+  background-color: #866063c7;
 }
 
 ion-menu::part(container) {
-  box-shadow: 4px 0px 16px #f2576429;
+  box-shadow: 4px 0px 16px #f2576452;
 }
 
 .fixed {
