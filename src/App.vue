@@ -17,7 +17,9 @@ const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/
       navigator.userAgent
     );
 
-if(!isMobile) router.push('/mobile-only')
+setTimeout(() => {
+  if(!isMobile) router.push('/mobile-only')
+}, 500)
 
 </script>
 
