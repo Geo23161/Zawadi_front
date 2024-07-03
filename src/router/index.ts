@@ -11,6 +11,10 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import ('../views/AcheteurView.vue')
   },
   {
+    path: '/mobile-only',
+    component: () => import ('../views/MobileOnly.vue')
+  },
+  {
     path: '/profil',
     component: () => import ('../views/ProfilAcheteurView.vue')
   },
