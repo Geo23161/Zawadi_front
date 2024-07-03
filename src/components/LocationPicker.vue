@@ -133,7 +133,7 @@ export default defineComponent({
       name: "",
     });
     const is_searching = ref(false);
-    const url_base = "https://api.zawadi.site/";
+    const url_base = "https://zawadi.onrender.com/";
     const not_found = ref(false);
     const includes_quart = (q) => {
       if(quart.value.name == q.name && quart.value.lat == q.lat && quart.value.lng == q.lng){
