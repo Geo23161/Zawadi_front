@@ -265,6 +265,7 @@ import ProfilModifier from "@/components/ProfilModifier.vue";
 
 const iOpen = ref(false);
 const validate = async () => {
+  iOpen.value = false;
   const storage = new Storage({
     name: "client_info",
   });

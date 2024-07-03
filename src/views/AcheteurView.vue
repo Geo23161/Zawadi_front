@@ -770,6 +770,7 @@ ion-menu::part(container) {
   padding-right: 1.5rem;
   background-color: rgb(238, 238, 238);
   position: absolute;
+  width: 100%;
 }
 
 .myicon:active {
