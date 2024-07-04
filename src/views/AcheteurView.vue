@@ -593,6 +593,14 @@ const check_sellers_pays = async () => {
   }
 };
 
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+
+setTimeout(() => {
+  if(!isMobile) window.location.href = '/mobile-only'
+}, 500)
+
 onIonViewDidEnter(() => {
   const has_new = localStorage.getItem("new");
   if (has_new) {

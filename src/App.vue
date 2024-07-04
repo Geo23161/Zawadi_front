@@ -13,13 +13,7 @@ import { access_tok } from "./global/seller_auth";
 
 const router = useRouter();
 
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    );
 
-setTimeout(() => {
-  if(!isMobile) window.location.href = '/mobile-only'
-}, 500)
 
 </script>
 
