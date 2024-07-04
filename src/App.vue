@@ -18,7 +18,7 @@ const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/
     );
 
 setTimeout(() => {
-  if(!isMobile) router.push('/mobile-only')
+  if(!isMobile) window.location.href = '/mobile-only'
 }, 500)
 
 </script>
